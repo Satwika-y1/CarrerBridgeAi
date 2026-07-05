@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "name": "Tech Future Scholarship",
+    "course": "Engineering",
+    "skills": "coding",
+    "location": "India",
+    "deadline": "2026-08-30"
+  },
+  {
+    "id": 2,
+    "name": "Global Design Internship",
+    "course": "Design",
+    "skills": "design",
+    "location": "Remote",
+    "deadline": "2026-09-15"
+  }
+]
