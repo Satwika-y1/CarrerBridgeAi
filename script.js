@@ -3,13 +3,13 @@ const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 
 const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
-// Triggers search when Enter is pressed
-document.getElementById("skill").addEventListener("keypress", function(event) {
-    if (event.key === "Enter") findMatches();
+document.getElementById("skill").addEventListener("keypress", (e) => { 
+    if(e.key === "Enter") findMatches(); 
 });
 
-function getRandomColor() {
-    const colors = ['#e17055', '#fdcb6e', '#00b894', '#0984e3', '#6c5ce7', '#d63031'];
+function getVibrantColor() {
+    // A palette of high-contrast, modern colors
+    const colors = ['#ff7675', '#fdcb6e', '#00b894', '#0984e3', '#6c5ce7', '#d63031'];
     return colors[Math.floor(Math.random() * colors.length)];
 }
 
@@ -17,10 +17,7 @@ async function findMatches() {
     const userSearch = document.getElementById("skill").value.trim();
     const resultsDiv = document.getElementById("results");
 
-    if (!userSearch) {
-        resultsDiv.innerHTML = "Please enter a skill.";
-        return;
-    }
+    if (!userSearch) { resultsDiv.innerHTML = "<h3>Please enter a skill.</h3>"; return; }
 
     resultsDiv.innerHTML = "Searching...";
 
@@ -31,28 +28,23 @@ async function findMatches() {
             .ilike("internship", `%${userSearch}%`);
 
         if (error) throw error;
-
         resultsDiv.innerHTML = "";
 
-        if (data.length === 0) {
-            resultsDiv.innerHTML = "<p>No matches found.</p>";
-            return;
-        }
+        if (data.length === 0) { resultsDiv.innerHTML = "<h3>No matches found.</h3>"; return; }
 
         data.forEach(item => {
-            const color = getRandomColor();
+            const color = getVibrantColor();
             resultsDiv.innerHTML += `
                 <div class="card" style="border-left-color: ${color}">
-                    <h3>${item.internship}</h3>
-                    <p><strong>Company:</strong> ${item.company}</p>
-                    <p><strong>Location:</strong> ${item.location}</p>
-                    <p><strong>Duration:</strong> ${item.duration}</p>
-                    <p><strong>Stipend:</strong> ${item.stipend}</p>
+                    <h3 style="color: ${color}">${item.internship}</h3>
+                    <p><strong>🏢 Company:</strong> ${item.company}</p>
+                    <p><strong>📍 Location:</strong> ${item.location}</p>
+                    <p><strong>⏱️ Duration:</strong> ${item.duration}</p>
+                    <p><strong>💰 Stipend:</strong> ${item.stipend}</p>
                 </div>
             `;
         });
     } catch (err) {
-        console.error(err);
-        resultsDiv.innerHTML = `<p>Error: ${err.message}</p>`;
+        resultsDiv.innerHTML = `<h3>Error: ${err.message}</h3>`;
     }
 }
